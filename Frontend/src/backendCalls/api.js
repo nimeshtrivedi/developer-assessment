@@ -1,8 +1,10 @@
 const toDoApiUri = 'https://localhost:44397/api/todoitems'
 
 export async function getAllToDoItems() {
+  console.log('hitting')
   const response = await fetch(`${toDoApiUri}`)
   const data = await response.json()
+  console.log(data)
 
   if (!response.ok) {
     throw new Error(data.message || 'Could not fetch todo items.')
@@ -29,6 +31,7 @@ export async function addToDoTask(taskData) {
 }
 
 export async function completeToDoTask(taskData) {
+  console.log('hitting1')
   taskData.isCompleted = true
   //   console.log('marking this task as completed', JSON.stringify(taskData.id, taskData))
   const response = await fetch(`${toDoApiUri}/${taskData.id}`, {

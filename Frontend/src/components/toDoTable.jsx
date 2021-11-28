@@ -1,43 +1,32 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button, Table } from 'react-bootstrap'
-import { getAllToDoItems, completeToDoTask } from '../backendCalls/api'
-import useHttp from './../customHooks/serverCalls'
+import { saveToDoItem, getToDoItems } from '../backendCalls/toDoService'
 
 const ToDoTable = () => {
   const [items, setItems] = useState([])
-  const { sendRequest, status, data, error } = useHttp(getAllToDoItems, true)
-  const { sendRequest: markCompleted, completedError } = useHttp(completeToDoTask)
 
   async function getItems() {
-    setItems([])
-    if (status === 'completed') {
-      console.log(data)
+    try {
+      const { data } = await getToDoItems()
+
       setItems(data)
-      console.log('fetch completed')
+    } catch (error) {
+      console.error(error)
     }
-    if (error) console.log(error)
-    console.log('getitems clicked')
   }
 
   async function handleMarkAsComplete(item) {
     try {
-      markCompleted(item)
+      item.isCompleted = true
+      saveToDoItem(item)
       const filteredItems = items.filter((curItem) => {
-        return curItem.id != item.id
+        return curItem.id !== item.id
       })
       setItems(filteredItems)
     } catch (error) {
       console.error(error)
     }
   }
-
-  useEffect(() => {
-    sendRequest()
-  }, [sendRequest])
-
-  useEffect(() => {
-    markCompleted()
-  }, [markCompleted])
 
   return (
     <>

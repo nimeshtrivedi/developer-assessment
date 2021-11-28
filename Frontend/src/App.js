@@ -4,12 +4,10 @@ import React, { useEffect } from 'react'
 import ToDoForm from './components/toDoForm'
 import ToDoTable from './components/toDoTable'
 
-const axios = require('axios')
-
 const App = () => {
-  useEffect(() => {
-    // todo
-  }, [])
+  // useEffect(() => {
+  //   // todo
+  // }, [])
 
   const renderAddTodoItemContent = () => {
     return <ToDoForm />
