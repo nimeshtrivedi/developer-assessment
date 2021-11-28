@@ -1,20 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { Button, Container, Row, Col, Form, Stack } from 'react-bootstrap'
+import { addToDoTask } from '../backendCalls/api'
+import useHttp from './../customHooks/serverCalls'
 
 const ToDoForm = () => {
   const [description, setDescription] = useState('')
+  const { sendRequest, status, error } = useHttp(addToDoTask)
+
   const handleDescriptionChange = (event) => {
     // todo
     event.preventDefault()
-    console.log(event.value)
+    setDescription(event.target.value)
   }
 
   async function handleAdd() {
-    try {
-      alert('todo')
-    } catch (error) {
-      console.error(error)
-    }
+    // try {
+    //   alert('todo')
+    // } catch (error) {
+    //   console.error(error)
+    // }
+
+    // console.log({ description })
+
+    // sendRequest({ description: { description } })
+    sendRequest({ description })
   }
 
   function handleClear() {
