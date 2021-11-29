@@ -52,8 +52,6 @@ namespace TodoList.Api.Controllers
                 return BadRequest();
             }
 
-            
-
             try
             {
                 await _svc.PutTodoItem(todoItem);
@@ -75,7 +73,7 @@ namespace TodoList.Api.Controllers
 
         // POST: api/TodoItems 
         [HttpPost]
-        public async Task<IActionResult> PostTodoItem(TodoItemVm todoItem)
+        public async Task<IActionResult> PostTodoItem(TodoItemAddVm todoItem)
         {
             if (string.IsNullOrEmpty(todoItem?.Description))
             {
@@ -85,9 +83,9 @@ namespace TodoList.Api.Controllers
             {
                 return BadRequest("Description already exists");
             } 
-            var retObj =  await _svc.PostTodoItem(todoItem);
+            var retToDoItem =  await _svc.PostTodoItem(todoItem);
                          
-            return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
+            return CreatedAtAction(nameof(_svc.PostTodoItem), new { id = retToDoItem.Id }, retToDoItem);
         } 
 
         private bool TodoItemIdExists(Guid id)

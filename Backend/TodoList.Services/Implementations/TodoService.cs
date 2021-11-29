@@ -48,16 +48,15 @@ namespace TodoList.Services.Implementations
             }
         }
 
-        public async Task<TodoItemVm> PostTodoItem(TodoItemVm todoItemVm)
+        public async Task<TodoItemVm> PostTodoItem(TodoItemAddVm todoItemVm)
         {
             try
             {
                 var todoItem = await _db.Add(_mapper.Map<TodoItem>(todoItemVm));
                 return _mapper.Map<TodoItemVm>(todoItem);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
                 throw;
             }
             

@@ -9,6 +9,7 @@ namespace TodoList.Services.MappingProfile
         public ToDoItemMappingProfile()
         {
             CreateMap<TodoItem, TodoItemVm>().ReverseMap();
+            CreateMap<TodoItemAddVm, TodoItem>();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace TodoList.Services.Interfaces
     {
         Task<TodoItemVm> GetTodoItem(Guid id);
         Task<IEnumerable<TodoItemVm>> GetTodoItems();
-        Task<TodoItemVm> PostTodoItem(TodoItemVm todoItemVm);
+        Task<TodoItemVm> PostTodoItem(TodoItemAddVm todoItemVm);
         Task PutTodoItem( TodoItemVm todoItemVm);
         bool TodoItemIdExists(Guid id);
 
