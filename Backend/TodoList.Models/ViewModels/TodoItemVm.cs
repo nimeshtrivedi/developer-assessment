@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 
-namespace TodoList.Api
+namespace TodoList.Models.ViewModels
 {
-    public class TodoItem
+    public class TodoItemVm
     {
         public Guid Id { get; set; }
 

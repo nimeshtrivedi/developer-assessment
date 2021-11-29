@@ -2,8 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
+using TodoList.Models.ViewModels;
+using TodoList.Services.Interfaces;
 
 namespace TodoList.Api.Controllers
 {
@@ -11,12 +12,12 @@ namespace TodoList.Api.Controllers
     [ApiController]
     public class TodoItemsController : ControllerBase
     {
-        private readonly TodoContext _context;
+        private readonly ITodoService _svc;
         private readonly ILogger<TodoItemsController> _logger;
 
-        public TodoItemsController(TodoContext context, ILogger<TodoItemsController> logger)
+        public TodoItemsController(ITodoService svc, ILogger<TodoItemsController> logger)
         {
-            _context = context;
+            _svc = svc;
             _logger = logger;
         }
 
@@ -24,7 +25,7 @@ namespace TodoList.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTodoItems()
         {
-            var results = await _context.TodoItems.Where(x => !x.IsCompleted).ToListAsync();
+            var results = await _svc.GetTodoItems();
             return Ok(results);
         }
 
@@ -32,7 +33,7 @@ namespace TodoList.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTodoItem(Guid id)
         {
-            var result = await _context.TodoItems.FindAsync(id);
+            var result = await _svc.GetTodoItem(id);
 
             if (result == null)
             {
@@ -44,18 +45,18 @@ namespace TodoList.Api.Controllers
 
         // PUT: api/TodoItems/... 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(Guid id, TodoItem todoItem)
+        public async Task<IActionResult> PutTodoItem(Guid id, TodoItemVm todoItem)
         {
             if (id != todoItem.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(todoItem).State = EntityState.Modified;
+            
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _svc.PutTodoItem(todoItem);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -74,7 +75,7 @@ namespace TodoList.Api.Controllers
 
         // POST: api/TodoItems 
         [HttpPost]
-        public async Task<IActionResult> PostTodoItem(TodoItem todoItem)
+        public async Task<IActionResult> PostTodoItem(TodoItemVm todoItem)
         {
             if (string.IsNullOrEmpty(todoItem?.Description))
             {
@@ -84,22 +85,20 @@ namespace TodoList.Api.Controllers
             {
                 return BadRequest("Description already exists");
             } 
-
-            _context.TodoItems.Add(todoItem);
-            await _context.SaveChangesAsync();
-             
+            var retObj =  await _svc.PostTodoItem(todoItem);
+                         
             return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
         } 
 
         private bool TodoItemIdExists(Guid id)
         {
-            return _context.TodoItems.Any(x => x.Id == id);
+            return _svc.TodoItemIdExists(id);
+            
         }
 
         private bool TodoItemDescriptionExists(string description)
         {
-            return _context.TodoItems
-                   .Any(x => x.Description.ToLowerInvariant() == description.ToLowerInvariant() && !x.IsCompleted);
+            return _svc.TodoItemDescriptionExists(description);
         }
     }
 }

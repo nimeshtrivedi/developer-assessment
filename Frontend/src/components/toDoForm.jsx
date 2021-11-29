@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Container, Row, Col, Form, Stack } from 'react-bootstrap'
-import { addToDoTask } from '../backendCalls/api'
 import { saveToDoItem } from '../backendCalls/toDoService'
-import useHttp from './../customHooks/serverCalls'
 
 const ToDoForm = () => {
   const [description, setDescription] = useState('')
@@ -16,6 +14,7 @@ const ToDoForm = () => {
     try {
       saveToDoItem({ description })
     } catch (error) {
+      alert(error)
       console.error(error)
     }
   }

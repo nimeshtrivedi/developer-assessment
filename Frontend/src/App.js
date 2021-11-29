@@ -1,14 +1,10 @@
 import './App.css'
 import { Image, Alert, Container, Row, Col } from 'react-bootstrap'
-import React, { useEffect } from 'react'
+import React from 'react'
 import ToDoForm from './components/toDoForm'
 import ToDoTable from './components/toDoTable'
 
 const App = () => {
-  // useEffect(() => {
-  //   // todo
-  // }, [])
-
   const renderAddTodoItemContent = () => {
     return <ToDoForm />
   }

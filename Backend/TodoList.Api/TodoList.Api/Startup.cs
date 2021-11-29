@@ -5,6 +5,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using TodoList.DataAccess;
+using TodoList.DataAccess.Repositories.Implementation;
+using TodoList.DataAccess.Repositories.Interfaces;
+using TodoList.Services.Implementations;
+using TodoList.Services.Interfaces;
+using TodoList.Services.MappingProfile;
 
 namespace TodoList.Api
 {
@@ -38,6 +44,9 @@ namespace TodoList.Api
             });
 
             services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoItemsDB"));
+            services.AddScoped<ITodoItemRepository, TodoItemRepository>();
+            services.AddScoped<ITodoService, TodoService>();
+            services.AddAutoMapper(typeof(ToDoItemMappingProfile).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

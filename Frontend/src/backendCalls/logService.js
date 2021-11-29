@@ -1,10 +1,11 @@
-function init() {}
+const init = () => {}
 
-function log(error) {
+const log = (error) => {
   console.error(error)
 }
 
-export default {
+const exportObject = {
   init,
   log,
 }
+export default exportObject
